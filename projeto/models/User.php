@@ -2,61 +2,103 @@
 
 namespace app\models;
 
-use Yii;
-
-/**
- * This is the model class for table "user".
- *
- * @property int $idUser
- * @property string $Username
- * @property string $Email
- * @property string $Password
- *
- * @property Lote[] $lotes
- */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
+    public $id;
+    public $username;
+    public $password;
+    public $authKey;
+    public $accessToken;
+
+    private static $users = [
+        '100' => [
+            'id' => '100',
+            'username' => 'admin',
+            'password' => 'admin',
+            'authKey' => 'test100key',
+            'accessToken' => '100-token',
+        ],
+        '101' => [
+            'id' => '101',
+            'username' => 'demo',
+            'password' => 'demo',
+            'authKey' => 'test101key',
+            'accessToken' => '101-token',
+        ],
+    ];
+
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function findIdentity($id)
     {
-        return 'user';
+        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        return [
-            [['idUser', 'Username', 'Email', 'Password'], 'required'],
-            [['idUser'], 'integer'],
-            [['Username', 'Email', 'Password'], 'string', 'max' => 45],
-            [['idUser'], 'unique'],
-        ];
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'idUser' => 'Id User',
-            'Username' => 'Username',
-            'Email' => 'Email',
-            'Password' => 'Password',
-        ];
-    }
-
-    /**
-     * Gets query for [[Lotes]].
+     * Finds user by username
      *
-     * @return \yii\db\ActiveQuery
+     * @param string $username
+     * @return static|null
      */
-    public function getLotes()
+    public static function findByUsername($username)
     {
-        return $this->hasMany(Lote::class, ['User_idUser' => 'idUser']);
+        foreach (self::$users as $user) {
+            if (strcasecmp($user['username'], $username) === 0) {
+                return new static($user);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->authKey === $authKey;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return $this->password === $password;
     }
 }
