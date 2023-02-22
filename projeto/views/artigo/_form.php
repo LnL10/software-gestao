@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Cor;
 use app\models\Tamanho;
+use app\models\Genero;
+use app\css\my;
 
 /** @var yii\web\View $this */
 /** @var app\models\ArtigoModel $model */
@@ -36,18 +38,21 @@ use app\models\Tamanho;
     ?>
 
     <?= $form->field($model, 'Tamanho_idtamanho')->dropDownList(
-            ArrayHelper::map(Tamanho::getAll(),'idtamanho','TamanhoSite'),
+            ArrayHelper::map(Tamanho::getAll(),'idtamanho','SiteTamanho'),
             ['prompt'=> 'Selecionar Tamanho']
         ) 
     ?>
 
 
 
-    
-
     <?= $form->field($model, 'Categoria_idcategoria')->textInput() ?>
 
-    <?= $form->field($model, 'Genero_idGenero')->textInput() ?>
+
+    <?= $form->field($model, 'Genero_idGenero')->dropDownList(
+            ArrayHelper::map(Genero::getAll(),'idGenero','TipoGenero'),
+            ['prompt'=> 'Selecionar Genero']
+        ) 
+    ?>
 
     <?= $form->field($model, 'Marca_idMarca')->textInput() ?>
 
@@ -58,7 +63,7 @@ use app\models\Tamanho;
     
 
     <div class="form-group">
-        <?= Html::submitButton('Adicionar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Adicionar', ['class' => ' my buttonAdd']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

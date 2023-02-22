@@ -1,0 +1,24 @@
+
+.buttonAdd {
+	background:linear-gradient(to bottom, #fe1a00 5%, #ff0000 100%);
+	background-color:#fe1a00;
+	border-radius:42px;
+	border:3px solid #d83526;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:28px;
+	font-weight:bold;
+	font-style:italic;
+	padding:9px 63px;
+	text-decoration:none;
+}
+.buttonAdd:hover {
+	background:linear-gradient(to bottom, #ff0000 5%, #fe1a00 100%);
+	background-color:#ff0000;
+}
+.buttonAdd:active {
+	position:relative;
+	top:1px;
+}
