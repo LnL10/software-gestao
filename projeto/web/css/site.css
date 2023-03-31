@@ -82,3 +82,114 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+.buttonAdd {
+	background:linear-gradient(to bottom, #fe1a00 5%, #ff0000 100%);
+	background-color:#fe1a00;
+	border-radius:50px;
+	border:3px solid #d83526;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:15px;
+	font-weight:bold;
+	font-style:italic;
+	padding:7px 15px;
+	text-decoration:none;
+}
+.buttonAdd:hover {
+	background:linear-gradient(to bottom, #ff0000 5%, #fe1a00 100%);
+	background-color:#ff0000;
+}
+.buttonAdd:active {
+	position:relative;
+	top:1px;
+}
+
+.buttonAdd1 {
+	background:linear-gradient(to bottom, blue 5%, blue 100%);
+	background-color:blue;
+	border-radius:50px;
+	border:3px solid darkblue;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:15px;
+	font-weight:bold;
+	font-style:italic;
+	padding:7px 15px;
+	text-decoration:none;
+}
+.buttonAdd1:hover {
+	background:linear-gradient(to bottom, blue 5%, blue 100%);
+	background-color:blue;
+}
+.buttonAdd1:active {
+	position:relative;
+	top:1px;
+}
+
+a.add{
+    background-color: #ff0000;
+    color: #ffffff;
+    font-family: Trebuchet MS;
+    font-size: 12px;
+    font-weight: 800;
+    font-style: normal;
+    text-decoration: none;
+    padding: 13px 15px;
+    padding-top: 10px;
+    border: 0px solid #ffffff;
+    border-radius: 0px;
+    display: inline-block;
+   }
+   a.add:hover{
+    background-color: #ff5151;
+   }
+   a.add:active{
+    transform: scale(0.95);
+   }
+
+
+   .but {
+    display: inline-block;
+    text-decoration: none;
+    background-color: red;
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 19px;
+    padding: 56px;
+    width: 200px;
+    height: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    border-radius: 50%;
+    font-family: Georgia;
+    display: inline-block;
+    box-shadow: inset 0px 0px 43px 19px rgba(0,0,0,0.5);
+    
+    
+  }
+  
+  .but:hover {
+    background-color: #f20000;
+    
+  }
+
+  .title {
+    text-align: center; 
+    font-size: 2em; 
+    font-weight: bold;
+    text-transform: uppercase; 
+    margin-bottom: 20px; 
+    
+}
+  
+
+
+
+

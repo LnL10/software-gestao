@@ -12,6 +12,26 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'js' => [
+                        'jquery.min.js',
+                    ],
+                ],
+                'yii\jui\JuiAsset' => [
+                    'sourcePath' => '@bower/jquery-ui',
+                    'css' => [
+                        'themes/smoothness/jquery-ui.css',
+                    ],
+                    'js' => [
+                        'jquery-ui.min.js',
+                    ],
+                ],
+            ],
+        ],
+
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'vCOk4LRU0yBzywa9vy-w2CYsz8rUzUO7',
@@ -50,18 +70,24 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        
     ],
     'params' => $params,
     
-    'modules'=>[
+    
+     'modules'=>[
+
+        
+            'datecontrol' =>  [
+                 'class' => '\kartik\datecontrol\Module'
+            ],
         'user-management' => [
             'class' => 'webvimark\modules\UserManagement\UserManagementModule',
     

@@ -2,18 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\ArtigoModel;
+use app\models\artigobase;
 use app\models\ArtigoSearch;
-use app\models\Lote;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ArtigoController implements the CRUD actions for ArtigoModel model.
+ * ArtigobaseController implements the CRUD actions for artigobase model.
  */
-class ArtigoController extends Controller
+class ArtigobaseController extends Controller
 {
     /**
      * @inheritDoc
@@ -34,52 +32,46 @@ class ArtigoController extends Controller
     }
 
     /**
-     * Lists all ArtigoModel models.
+     * Lists all artigobase models.
      *
      * @return string
      */
-    public function actionIndex($lote = null)
-{
-    $searchModel = new ArtigoSearch();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-    if ($lote !== null) {
-        $dataProvider->query->joinWith('Lote')->andWhere(['Lote.idLote' => $lote]);
-    }
-        
-    return $this->render('index', [
-        'searchModel' => $searchModel,
-        'dataProvider' => $dataProvider,
-    ]);
-}
-
-    
-
-    /**
-     * Displays a single ArtigoModel model.
-     * @param int $idArtigo Id Artigo
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($idArtigo)
+    public function actionIndex()
     {
-        return $this->render('view', [
-            'model' => $this->findModel($idArtigo),
+        $searchModel = new ArtigoSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Creates a new ArtigoModel model.
+     * Displays a single artigobase model.
+     * @param int $ReferenciaBase Referencia Base
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($ReferenciaBase)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($ReferenciaBase),
+        ]);
+    }
+
+    /**
+     * Creates a new artigobase model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new ArtigoModel();
+        $model = new artigobase();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['lote/artigos', 'idLote' => $model->Lote_idLote]);
+                return $this->redirect(['view', 'ReferenciaBase' => $model->ReferenciaBase]);
             }
         } else {
             $model->loadDefaultValues();
@@ -91,18 +83,18 @@ class ArtigoController extends Controller
     }
 
     /**
-     * Updates an existing ArtigoModel model.
+     * Updates an existing artigobase model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idArtigo Id Artigo
+     * @param int $ReferenciaBase Referencia Base
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idArtigo)
+    public function actionUpdate($ReferenciaBase)
     {
-        $model = $this->findModel($idArtigo);
+        $model = $this->findModel($ReferenciaBase);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['lote/artigos', 'idLote' => $model->Lote_idLote]);
+            return $this->redirect(['view', 'ReferenciaBase' => $model->ReferenciaBase]);
         }
 
         return $this->render('update', [
@@ -111,37 +103,32 @@ class ArtigoController extends Controller
     }
 
     /**
-     * Deletes an existing ArtigoModel model.
+     * Deletes an existing artigobase model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idArtigo Id Artigo
+     * @param int $ReferenciaBase Referencia Base
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idArtigo)
+    public function actionDelete($ReferenciaBase)
     {
-        $this->findModel($idArtigo)->delete();
+        $this->findModel($ReferenciaBase)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the ArtigoModel model based on its primary key value.
+     * Finds the artigobase model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idArtigo Id Artigo
-     * @return ArtigoModel the loaded model
+     * @param int $ReferenciaBase Referencia Base
+     * @return artigobase the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idArtigo)
+    protected function findModel($ReferenciaBase)
     {
-        if (($model = ArtigoModel::findOne(['idArtigo' => $idArtigo])) !== null) {
+        if (($model = artigobase::findOne(['ReferenciaBase' => $ReferenciaBase])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    
-
-
-   
 }

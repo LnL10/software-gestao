@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\ArtigoSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Artigo Models';
+$this->title = 'Artigos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="artigo-model-index">
