@@ -52,12 +52,12 @@
                         ]);
                     },
                     'export' => function ($url, $model, $key) {
-                        return Html::a('Exportar Excel', ['', 'idLote' => $model->idLote], [
+                        return Html::a('Exportar Excel', ['export-excel', 'idLote' => $model->idLote], [
                             'class' => 'btn btn-success',
                             'title' => 'Exportar',
                             'data-pjax' => '0',
                         ]);
-                    }, 
+                    },
                 ],
             ],
         ],
