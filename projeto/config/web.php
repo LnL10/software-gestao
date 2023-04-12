@@ -28,6 +28,15 @@ $config = [
                         'jquery-ui.min.js',
                     ],
                 ],
+                'yii\bootstrap\BootstrapAsset' => [
+                    'sourcePath' => '@vendor/twbs/bootstrap/dist',
+                    'css' => [
+                        'css/bootstrap.min.css',
+                    ],
+                    'js' => [
+                        'js/bootstrap.min.js',
+                    ],
+                ],
             ],
         ],
 

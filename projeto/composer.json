@@ -21,8 +21,10 @@
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "webvimark/module-user-management": "^1.0",
-        "phpoffice/phpexcel": "^1.8",
-        "phpoffice/phpspreadsheet": "^1.28"
+       
+        "phpoffice/phpspreadsheet": "^1.28",
+        "thtmorais/yii2-dropdown": "*"
+        
         
     },
     "require-dev": {

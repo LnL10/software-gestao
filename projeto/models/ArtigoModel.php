@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "artigo".
  *
@@ -29,9 +30,14 @@ use Yii;
  * @property Lote $loteIdLote
  * @property Marca $marcaIdMarca    
  * @property Tamanho $tamanhoIdtamanho
+ * 
+ * 
  */
 class ArtigoModel extends \yii\db\ActiveRecord
 {
+    public $excelFile;
+
+    
     /**
      * {@inheritdoc}
      */

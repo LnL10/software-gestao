@@ -5,6 +5,7 @@ use yii\bootstrap5\Html;
 
 $this->title = 'STOCK';
 ?>
+
 <div style="padding-top:120px">
 
 <div class="row">
@@ -14,7 +15,7 @@ $this->title = 'STOCK';
     </div>
 
     <div class="col-6" style="display: flex; justify-content: center; align-items: center;">
-    <?= Html::a('Importar', ['lote/index'], ['class' => 'but']) ?>
+    <?= Html::a('Importar', ['artigo/view-importar'], ['class' => 'but']) ?>
     </div>
 
 </div>

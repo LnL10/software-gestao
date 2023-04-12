@@ -159,7 +159,7 @@ class LoteController extends Controller
 
 
 
-public function actionExportExcel($idLote)
+public function actionExportExcelMoloni($idLote)
 {
     $dataProvider = new ActiveDataProvider([
         'query' => ArtigoModel::find()->where(['Lote_idLote' => $idLote]),
@@ -191,7 +191,50 @@ public function actionExportExcel($idLote)
     }
 
     // set the filename and headers for the download
-    $filename = 'artigos-lote-' . $idLote . '.xlsx';
+    $filename = 'moloni-artigos-lote-' . $idLote . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+
+    // create the writer
+    $writer = new Xlsx($spreadsheet);
+
+    // output the file to the browser
+    $writer->save('php://output');
+    exit();
+}
+
+public function actionExportExcelShopify($idLote)
+{
+    $dataProvider = new ActiveDataProvider([
+        'query' => ArtigoModel::find()->where(['Lote_idLote' => $idLote]),
+        'pagination' => [
+            'pageSize' => 20,
+        ],
+    ]);
+
+    // create a new spreadsheet object
+    $spreadsheet = new Spreadsheet();
+
+    // set the active sheet
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // set the column headers
+    $sheet->setCellValue('A1', 'Artigo');
+    $sheet->setCellValue('B1', 'Referencia');
+    
+
+    // loop through the data provider and add the rows to the worksheet
+    $row = 2;
+    foreach ($dataProvider->getModels() as $model) {
+        $sheet->setCellValue('A' . $row, $model->artigoBaseReferenciaBase->Nome);
+        $sheet->setCellValue('B' . $row, $model->Referencia);
+       
+        $row++;
+    }
+
+    // set the filename and headers for the download
+    $filename = 'shopify-artigos-lote-' . $idLote . '.xlsx';
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="' . $filename . '"');
     header('Cache-Control: max-age=0');

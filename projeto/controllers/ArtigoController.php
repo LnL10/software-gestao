@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * ArtigoController implements the CRUD actions for ArtigoModel model.
@@ -68,6 +69,16 @@ class ArtigoController extends Controller
         ]);
     }
 
+    public function actionViewImportar()
+    {
+        $model = new ArtigoModel();
+        return $this->render('importar',[
+            'model' => $model,
+        ]);  
+
+        
+    }
+
     /**
      * Creates a new ArtigoModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -89,6 +100,8 @@ class ArtigoController extends Controller
             'model' => $model,
         ]);
     }
+
+
 
     /**
      * Updates an existing ArtigoModel model.
@@ -140,6 +153,42 @@ class ArtigoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+
+    public function actionImportar()
+{
+    $model = new ArtigoModel();
+
+    if (Yii::$app->request->isPost) {
+        $model->file = UploadedFile::getInstance($model, 'excelFile');
+        if ($model->upload()) {
+            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+            $spreadsheet = $reader->load($model->file->tempName);
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            foreach ($worksheet->getRowIterator() as $row) {
+                $rowData = $row->toArray();
+                $artigo = new ArtigoModel();
+                $artigo->Referencia = $rowData[0];
+                $artigo->Lote_idLote = $rowData[1];
+                $artigo->Cor_idCor = $rowData[2];
+                $artigo->Tamanho_idtamanho = $rowData[3];
+                $artigo->Categoria_idcategoria = $rowData[4];
+                $artigo->Genero_idGenero = $rowData[5];
+                $artigo->Marca_idMarca = $rowData[6];
+                $artigo->Fornecedor_idFornecedor = $rowData[7];
+                $artigo->ArtigoBase_ReferenciaBase = $rowData[8];
+                $artigo->save();
+            }
+            Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
+            return $this->redirect(['index']);
+        }
+    }
+    Yii::$app->session->setFlash('fail', 'FAIL');
+    return $this->render('create', 
+        [
+        'model' => $model,
+    ]);
+}
     
 
 

@@ -6,6 +6,7 @@
     use yii\grid\ActionColumn;
     use yii\grid\GridView;
     use yii\grid\ButtonColumn;
+    use yii\bootstrap5\Dropdown;
 
     /** @var yii\web\View $this */
     /** @var app\models\LoteSearch $searchModel */
@@ -52,12 +53,50 @@
                         ]);
                     },
                     'export' => function ($url, $model, $key) {
-                        return Html::a('Exportar Excel', ['export-excel', 'idLote' => $model->idLote], [
+                        /*return Html::a('Exportar Excel', ['export-excel-shopify', 'idLote' => $model->idLote], [
                             'class' => 'btn btn-success',
                             'title' => 'Exportar',
                             'data-pjax' => '0',
+                        ]);*/
+
+                        $items = [
+                            [
+                                'label' => 'Exportar Moloni',
+                                'url' => ['export-excel-moloni', 'idLote' => $model->idLote],
+                                'linkOptions' => [
+                                    'title' => 'export-excel-moloni',
+                                    'data-pjax' => '0',
+                                ],
+                            ],
+                            [
+                                'label' => 'Exportar Shopify',
+                                'url' => ['export-excel-shopify', 'idLote' => $model->idLote],
+                                'linkOptions' => [
+                                    'title' => 'export-excel-shopify',
+                                    'data-pjax' => '0',
+                                ],
+                            ],
+                        ];
+
+                        $dropdown = Dropdown::widget([
+                           'items' => $items,
+                            'options' => [
+                                'class' => 'dropdown-menu-right',
+                            ],
                         ]);
+
+                        $button = Html::a('Exportar', '#', [
+                            'class' => 'btn btn-success dropdown-toggle-split',
+                            'data-bs-toggle' => 'dropdown',
+                            'aria-haspopup' => 'true',
+                            'aria-expanded' => 'false',
+                        ]);
+                    
+                        
+                        
+                        return $button . $dropdown;
                     },
+                
                 ],
             ],
         ],

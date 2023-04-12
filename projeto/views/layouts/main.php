@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\web\JqueryAsset;
 
 use webvimark\modules\UserManagement\components\GhostMenu;
 use webvimark\modules\UserManagement\UserManagementModule;
@@ -16,6 +17,7 @@ use webvimark\modules\UserManagement\UserManagementModule;
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
+$this->registerAssetBundle(JqueryAsset::class);
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
