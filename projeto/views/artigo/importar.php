@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data'],'action' => ['importar']]) ?>
     
 <?= $form->field($model, 'excelFile')->fileInput() ?>
 

@@ -10,6 +10,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\UploadedFile;
+
 
 /**
  * ArtigoController implements the CRUD actions for ArtigoModel model.
@@ -158,15 +160,15 @@ class ArtigoController extends Controller
 {
     $model = new ArtigoModel();
 
-    if (Yii::$app->request->isPost) {
-        $model->file = UploadedFile::getInstance($model, 'excelFile');
-        if ($model->upload()) {
+    if ($model->load(Yii::$app->request->post())) {
+        $model->excelFile = UploadedFile::getInstance($model, 'excelFile');
+        if ($model->excelFile) {
             $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
-            $spreadsheet = $reader->load($model->file->tempName);
+            $spreadsheet = $reader->load($model->excelFile->tempName);
             $worksheet = $spreadsheet->getActiveSheet();
 
             foreach ($worksheet->getRowIterator() as $row) {
-                $rowData = $row->toArray();
+                $rowData = $worksheet->toArray(null, true, true, true)[$row->getRowIndex()];
                 $artigo = new ArtigoModel();
                 $artigo->Referencia = $rowData[0];
                 $artigo->Lote_idLote = $rowData[1];
@@ -179,17 +181,18 @@ class ArtigoController extends Controller
                 $artigo->ArtigoBase_ReferenciaBase = $rowData[8];
                 $artigo->save();
             }
+
             Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
             return $this->redirect(['index']);
         }
     }
+
     Yii::$app->session->setFlash('fail', 'FAIL');
-    return $this->render('create', 
-        [
+    return $this->render('create', [
         'model' => $model,
     ]);
 }
-    
+
 
 
    

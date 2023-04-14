@@ -35,8 +35,8 @@ use Yii;
  */
 class ArtigoModel extends \yii\db\ActiveRecord
 {
-    public $excelFile;
-
+    
+    public $excelFile;  
     
     /**
      * {@inheritdoc}
@@ -49,6 +49,8 @@ class ArtigoModel extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+     
     public function rules()
     {
         return [
