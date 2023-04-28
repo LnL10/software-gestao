@@ -86,6 +86,14 @@ $config = [
             'rules' => [
             ],
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@vendor/webvimark/module-user-management/views' => '@app/views/webvimark/',
+                    '@vendor/webvimark/module-user-management/views/layouts/' => '@app/views/layouts/',
+                ],
+            ],
+        ],
         
     ],
     'params' => $params,
