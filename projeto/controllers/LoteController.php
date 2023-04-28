@@ -76,7 +76,7 @@ class LoteController extends Controller
      */
     public function actionCreate()
     {
-        $model = new lote();
+        $model = new Lote();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
