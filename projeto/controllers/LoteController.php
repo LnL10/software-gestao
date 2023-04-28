@@ -5,7 +5,7 @@ namespace app\controllers;
 
 use app\models\ArtigoModel;
 use app\models\ArtigoSearch;
-use app\models\lote;
+use app\models\Lote;
 use app\models\LoteSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -76,7 +76,7 @@ class LoteController extends Controller
      */
     public function actionCreate()
     {
-        $model = new lote();
+        $model = new Lote();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
