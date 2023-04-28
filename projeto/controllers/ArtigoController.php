@@ -166,6 +166,7 @@ class ArtigoController extends Controller
             $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
             $spreadsheet = $reader->load($model->excelFile->tempName);
             $worksheet = $spreadsheet->getActiveSheet();
+          
 
             foreach ($worksheet->getRowIterator() as $row) {
                 $rowData = $worksheet->toArray(null, true, true, true)[$row->getRowIndex()];
