@@ -5,6 +5,13 @@ namespace app\controllers;
 use app\models\ArtigoModel;
 use app\models\ArtigoSearch;
 use app\models\Lote;
+use app\models\Cor;
+use app\models\Tamanho;
+use app\models\Categoria;
+use app\models\Genero;
+use app\models\Marca;
+use app\models\Fornecedor;
+use app\models\Artigobase;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -157,44 +164,95 @@ class ArtigoController extends Controller
 
 
     public function actionImportar()
-{
-    $model = new ArtigoModel();
+    {
+        $model = new ArtigoModel();
+    
+        if ($model->load(Yii::$app->request->post())) {
+            $model->excelFile = UploadedFile::getInstance($model, 'excelFile');
+            if ($model->excelFile) {
+                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+                $spreadsheet = $reader->load($model->excelFile->tempName);
+                $worksheet = $spreadsheet->getActiveSheet();
+    
+                $rowIndex = 1;
+                foreach ($worksheet->getRowIterator() as $row) {
+                    if ($rowIndex == 1) { // ignora a primeira linha
+                        $rowIndex++;
+                        continue;
+                    }
+                    $rowData = $worksheet->toArray(null, true, true, true)[$row->getRowIndex()];
+                    $artigo = new ArtigoModel();
+                    $artigo->Referencia = $rowData["A"];
 
-    if ($model->load(Yii::$app->request->post())) {
-        $model->excelFile = UploadedFile::getInstance($model, 'excelFile');
-        if ($model->excelFile) {
-            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
-            $spreadsheet = $reader->load($model->excelFile->tempName);
-            $worksheet = $spreadsheet->getActiveSheet();
-          
+                    $artigo->Lote_idLote = $rowData["B"];
+                    
 
-            foreach ($worksheet->getRowIterator() as $row) {
-                $rowData = $worksheet->toArray(null, true, true, true)[$row->getRowIndex()];
-                $artigo = new ArtigoModel();
-                $artigo->Referencia = $rowData[0];
-                $artigo->Lote_idLote = $rowData[1];
-                $artigo->Cor_idCor = $rowData[2];
-                $artigo->Tamanho_idtamanho = $rowData[3];
-                $artigo->Categoria_idcategoria = $rowData[4];
-                $artigo->Genero_idGenero = $rowData[5];
-                $artigo->Marca_idMarca = $rowData[6];
-                $artigo->Fornecedor_idFornecedor = $rowData[7];
-                $artigo->ArtigoBase_ReferenciaBase = $rowData[8];
-                $artigo->save();
+                    $corNome = $rowData["C"]; 
+                    $cor = Cor::findOne(['CorSite' => $corNome]); 
+                    if ($cor !== null) {
+                        $artigo->Cor_idCor = $cor->idCor; 
+                    } else {
+                        Yii::warning("Cor não encontrada: $corNome"); 
+                    }
+                    
+                    $TamanhoNome = $rowData["D"];
+                    $tamanho = Tamanho::findOne(['SiteTamanho' => $TamanhoNome]); 
+                    if ($tamanho !== null) {
+                        $artigo->Tamanho_idtamanho = $tamanho->idtamanho; 
+                    } else {
+                        Yii::warning("Tamanho não encontrada: $TamanhoNome"); 
+                    }
+
+                    $CategoriaNome = $rowData["E"];
+                    $categoria = Categoria::findOne(['NomeCategoria' => $CategoriaNome]); 
+                    if ($categoria !== null) {
+                        $artigo->Categoria_idcategoria = $categoria->idcategoria; 
+                    } else {
+                        Yii::warning("Categoria não encontrada: $CategoriaNome"); 
+                    }
+
+
+                    $GeneroNome = $rowData["F"];
+                    $genero = Genero::findOne(['TipoGenero' => $GeneroNome]); 
+                    if ($genero !== null) {
+                        $artigo->Genero_idGenero = $genero->idGenero; 
+                    } else {
+                        Yii::warning("Genero não encontrada: $GeneroNome"); 
+                    }
+
+                    $MarcaNome = $rowData["G"];
+                    $marca = Marca::findOne(['NomeMarca' => $MarcaNome]); 
+                    if ($marca !== null) {
+                        $artigo->Marca_idMarca = $marca->idMarca; 
+                    } else {
+                        Yii::warning("Marca não encontrada: $MarcaNome"); 
+                    }
+
+
+                    $FornecedorNome = $rowData["H"];
+                    $fornecedor = Fornecedor::findOne(['NomeFornecedor' => $FornecedorNome]); 
+                    if ($fornecedor !== null) {
+                        $artigo->Fornecedor_idFornecedor = $fornecedor->idFornecedor; 
+                    } else {
+                        Yii::warning("Fornecedor não encontrada: $FornecedorNome"); 
+                    }
+
+                    $artigo->ArtigoBase_ReferenciaBase = $rowData["I"];
+
+                    $artigo->save();
+                    $rowIndex++;
+                }
+    
+                Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
+                return $this->redirect(['index']);
             }
-
-            Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
-            return $this->redirect(['index']);
         }
+    
+        Yii::$app->session->setFlash('fail', 'FAIL');
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
-
-    Yii::$app->session->setFlash('fail', 'FAIL');
-    return $this->render('create', [
-        'model' => $model,
-    ]);
-}
-
-
-
+    
    
 }

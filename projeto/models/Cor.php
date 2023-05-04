@@ -61,4 +61,8 @@ class Cor extends \yii\db\ActiveRecord
     public static function getAll(){
         return $cores = Cor::find()->all();
     }
+
+    
+
+
 }
