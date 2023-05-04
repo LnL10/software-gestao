@@ -244,11 +244,11 @@ class ArtigoController extends Controller
                 }
     
                 Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
-                return $this->redirect(['index']);
+                return $this->redirect(['lote/artigos', 'idLote' => $artigo->Lote_idLote]);
             }
         }
     
-        Yii::$app->session->setFlash('fail', 'FAIL');
+        Yii::$app->session->setFlash('fail', 'Erro ao importar os dados');
         return $this->render('create', [
             'model' => $model,
         ]);

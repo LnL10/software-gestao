@@ -28,6 +28,7 @@ use yii\helpers\Url;
         'Referencia',
         'marcaIdMarca.NomeMarca',  
         'tamanhoIdtamanho.SiteTamanho', 
+        'corIdCor.CorSite',
         [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{update} {delete}',
