@@ -13,8 +13,15 @@ use yii\web\JqueryAsset;
 
 use webvimark\modules\UserManagement\components\GhostMenu;
 use webvimark\modules\UserManagement\UserManagementModule;
+use webvimark\modules\UserManagement\models\User;
+
+
+
+
+
 
 AppAsset::register($this);
+
 
 $this->registerCsrfMetaTags();
 $this->registerAssetBundle(JqueryAsset::class);
@@ -37,7 +44,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <header id="header">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => "STOCK",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
@@ -45,22 +52,23 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Sobre', 'url' => ['/site/about']],
+            ['label' => 'Lotes', 'url' => ['/lote/index']],
             ['label' => 'Contactos', 'url' => ['/site/contact']],
+            
+
+            [
+                'label' => 'User',
+                'items'=>[        
+                    ['label'=>'Logout', 'url'=>['/user-management/auth/logout']],
+                    ['label'=>'Change own password', 'url'=>['/user-management/auth/change-own-password']],      
+                ],
+            ],
+
             [
                 'label' => 'Backend routes',
-                'items'=>UserManagementModule::menuItems()
-            ],
-            [
-                'label' => 'Frontend routes',
-                'items'=>[
-                    ['label'=>'Login', 'url'=>['/user-management/auth/login']],
-                    ['label'=>'Logout', 'url'=>['/user-management/auth/logout']],
-                    ['label'=>'Registration', 'url'=>['/user-management/auth/registration']],
-                    ['label'=>'Change own password', 'url'=>['/user-management/auth/change-own-password']],
-                    ['label'=>'Password recovery', 'url'=>['/user-management/auth/password-recovery']],
-                    ['label'=>'E-mail confirmation', 'url'=>['/user-management/auth/confirm-email']],
-                ],
+                'items' => UserManagementModule::menuItems(),
+                'visible' => !Yii::$app->user->isGuest && User::findIdentity(Yii::$app->user->id)->hasPermission("editUsers")
+
             ],
             /*Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]

@@ -12,6 +12,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+    
     /**
      * {@inheritdoc}
      */
@@ -38,9 +39,18 @@ class SiteController extends Controller
         ];*/
         
         return [
-            'ghost-access'=> [
-                'class' => 'webvimark\modules\UserManagement\components\GhostAccessControl',
+            
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
             ],
+            
+            
         ];
     }
 
@@ -62,7 +72,8 @@ class SiteController extends Controller
 
     /**
      * Displays homepage.
-     *
+     * 
+     * 
      * @return string
      */
     public function actionIndex()
@@ -124,6 +135,7 @@ class SiteController extends Controller
 
     /**
      * Displays about page.
+     * 
      *
      * @return string
      */
@@ -131,4 +143,6 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+
 }
