@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\lote;
+use app\models\Lote;
 
 /**
  * LoteSearch represents the model behind the search form of `app\models\lote`.
  */
-class LoteSearch extends lote
+class LoteSearch extends Lote
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class LoteSearch extends lote
      */
     public function search($params)
     {
-        $query = lote::find();
+        $query = Lote::find();
 
         // add conditions that should always apply here
 

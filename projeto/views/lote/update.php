@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\lote $model */
+/** @var app\models\Lote $model */
 
 $this->title = 'Update Lote: ' . $model->idLote;
 $this->params['breadcrumbs'][] = ['label' => 'Lotes', 'url' => ['index']];

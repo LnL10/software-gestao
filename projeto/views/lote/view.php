@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\models\lote $model */
+/** @var app\models\Lote $model */
 
 $this->title = $model->idLote;
 $this->params['breadcrumbs'][] = ['label' => 'Lotes', 'url' => ['index']];

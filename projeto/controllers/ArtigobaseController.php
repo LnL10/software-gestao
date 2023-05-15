@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\artigobase;
+use app\models\Artigobase;
 use app\models\ArtigoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -67,7 +67,7 @@ class ArtigobaseController extends Controller
      */
     public function actionCreate()
     {
-        $model = new artigobase();
+        $model = new Artigobase();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -125,7 +125,7 @@ class ArtigobaseController extends Controller
      */
     protected function findModel($ReferenciaBase)
     {
-        if (($model = artigobase::findOne(['ReferenciaBase' => $ReferenciaBase])) !== null) {
+        if (($model = Artigobase::findOne(['ReferenciaBase' => $ReferenciaBase])) !== null) {
             return $model;
         }
 
