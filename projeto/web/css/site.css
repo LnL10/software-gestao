@@ -196,6 +196,64 @@ a.add{
     margin: 0 auto;
 }
 
+/* Adicione essas classes ao seu arquivo CSS */
+
+.lote-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.lote-form .form-group {
+    margin-bottom: 15px;
+}
+
+.lote-form .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.lote-form .btn-success:hover, .lote-form .btn-success:focus {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+.lote-form input[type="text"],
+.lote-form input[type="password"],
+.lote-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.lote-form input[type="text"]:focus,
+.lote-form input[type="password"]:focus,
+.lote-form textarea:focus {
+    outline: none;
+    border-color: #66afe9;
+    box-shadow: 0 0 5px #66afe9;
+}
+
+.lote-form .buttonAdd {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.lote-form .buttonAdd:hover {
+    background-color: #0056b3;
+}
+
+.lote-form .help-block {
+    color: #dc3545;
+}
+
+
 
 
   

@@ -10,6 +10,7 @@ use yii\helpers\Html;
  * @var webvimark\modules\UserManagement\models\forms\RegistrationForm $model
  */
 
+
 $this->title = UserManagementModule::t('front', 'Registration');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -47,4 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php ActiveForm::end(); ?>
 
 </div>
+
+
 

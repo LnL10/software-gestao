@@ -15,13 +15,7 @@ use webvimark\modules\UserManagement\components\GhostMenu;
 use webvimark\modules\UserManagement\UserManagementModule;
 use webvimark\modules\UserManagement\models\User;
 
-
-
-
-
-
-AppAsset::register($this);
-
+AppAsset::register($this);   
 
 $this->registerCsrfMetaTags();
 $this->registerAssetBundle(JqueryAsset::class);
