@@ -29,6 +29,7 @@ use yii\helpers\Url;
         'marcaIdMarca.NomeMarca',  
         'tamanhoIdtamanho.SiteTamanho', 
         'corIdCor.CorSite',
+        'CódigoDeBarras',
         [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{update} {delete}',

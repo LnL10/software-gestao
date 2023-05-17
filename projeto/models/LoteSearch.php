@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Lote;
+use Yii;
 
 /**
  * LoteSearch represents the model behind the search form of `app\models\lote`.
@@ -40,7 +41,8 @@ class LoteSearch extends Lote
      */
     public function search($params)
     {
-        $query = Lote::find();
+        $query = Lote::find()
+        ->where(['user_id' => Yii::$app->user->id]);
 
         // add conditions that should always apply here
 

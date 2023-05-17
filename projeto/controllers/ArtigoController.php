@@ -94,21 +94,49 @@ class ArtigoController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionCreate()
-    {
-        $model = new ArtigoModel();
+{
+    $model = new ArtigoModel();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+    if ($this->request->isPost) {
+        if ($model->load($this->request->post())) {
+            $fornecedorId = $model->Fornecedor_idFornecedor;
+            $corId = $model->Cor_idCor;
+            $tamanhoId = $model->Tamanho_idtamanho;
+
+            $fornecedor = Fornecedor::findOne($fornecedorId);
+            $cor = Cor::findOne($corId);
+            $tamanho = Tamanho::findOne($tamanhoId);
+
+            $codigoBarras = $this->generateCodigoBarras($cor, $tamanho, $fornecedor);
+
+            $model->CódigoDeBarras = $codigoBarras;
+
+            if ($model->save()) {
                 return $this->redirect(['lote/artigos', 'idLote' => $model->Lote_idLote]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+    } else {
+        $model->loadDefaultValues();
     }
+
+    return $this->render('create', [
+        'model' => $model,
+    ]);
+}
+
+private function generateCodigoBarras($cor, $tamanho, $fornecedor)
+    {
+        $estacao = '31'; 
+        $recebidos = '001'; 
+        $corCodigo = $cor ? str_pad($cor->CCor, 3, '0', STR_PAD_LEFT) : '000'; 
+        $tamanhoCodigo = $tamanho ? str_pad($tamanho->CTamanho, 3, '0', STR_PAD_LEFT) : '00'; 
+        //$fornecedorCodigo = $fornecedor ? $fornecedor->CFornecedor: '00'; 
+
+        $codigoBarras = $estacao . $recebidos . $corCodigo . $tamanhoCodigo; //. $fornecedorCodigo;
+
+        return $codigoBarras;
+    }
+
 
 
 
@@ -139,11 +167,11 @@ class ArtigoController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idArtigo)
+    public function actionDelete($idArtigo,$idLote)
     {
         $this->findModel($idArtigo)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['lote/artigos', 'idLote' => $idLote]);
     }
 
     /**

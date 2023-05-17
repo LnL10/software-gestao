@@ -117,7 +117,7 @@ use kartik\datecontrol\DateControl;
             ) 
         ?>
 
-        <?= $form->field($model, 'CódigoDeBarras')->textInput(['maxlength' => true]) ?>
+        
 
         
 
