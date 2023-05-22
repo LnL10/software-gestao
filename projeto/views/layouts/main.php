@@ -28,15 +28,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
+<?php $this->beginBody()  ?>
+<?php if (!Yii::$app->user->isGuest): ?>
+
 
 <header id="header">
-    <?php
+    <?php 
     NavBar::begin([
         'brandLabel' => "STOCK",
         'brandUrl' => Yii::$app->homeUrl,
@@ -48,7 +51,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Lotes', 'url' => ['/lote/index']],
             ['label' => 'Contactos', 'url' => ['/site/contact']],
-            
+
 
             [
                 'label' => 'User',
@@ -80,6 +83,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     NavBar::end();
     ?>
 </header>
+<?php endif; ?>
 
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">

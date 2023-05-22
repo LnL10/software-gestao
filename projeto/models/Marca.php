@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $idMarca
  * @property string $NomeMarca
+ * @property int|null $TotalMarca
  *
  * @property Artigo[] $artigos
  */
@@ -29,6 +30,7 @@ class Marca extends \yii\db\ActiveRecord
     {
         return [
             [['NomeMarca'], 'required'],
+            [['TotalMarca'], 'integer'],
             [['NomeMarca'], 'string', 'max' => 45],
             [['NomeMarca'], 'unique'],
         ];
@@ -42,6 +44,7 @@ class Marca extends \yii\db\ActiveRecord
         return [
             'idMarca' => 'Id Marca',
             'NomeMarca' => 'Nome Marca',
+            'TotalMarca' => 'Total Marca',
         ];
     }
 
@@ -54,7 +57,11 @@ class Marca extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Artigo::class, ['Marca_idMarca' => 'idMarca']);
     }
+
     public static function getAll(){
         return $marca = Marca::find()->all();
     }
+
+
+
 }

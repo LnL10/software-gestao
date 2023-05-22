@@ -16,12 +16,6 @@ use kartik\datecontrol\DateControl;
 
 
 
-
-
-
-
-
-
 /** @var yii\web\View $this */
 /** @var app\models\ArtigoModel $model */
 /** @var yii\widgets\ActiveForm $form */
@@ -52,11 +46,6 @@ use kartik\datecontrol\DateControl;
         </div>
         
 
-
-
-        <?= $form->field($model, 'Referencia')->textInput(['maxlength' => true]) ?>
-
-     
         <?= $form->field($model, 'Data')->widget(DateControl::classname(), [
                 'type'=>DateControl::FORMAT_DATE,
                 'ajaxConversion'=>false,
@@ -69,10 +58,10 @@ use kartik\datecontrol\DateControl;
             ?>
 
         <?= $form->field($model, 'Lote_idLote')->dropDownList(
-                ArrayHelper::map(Lote::getAll(),'idLote','NomeLote'),
-                ['prompt'=> 'Selecionar Lote']
-            ) ->label('Lote')
-        ?>
+            ArrayHelper::map(Lote::find()->where(['user_id' => Yii::$app->user->id])->all(), 'idLote', 'NomeLote'),
+            ['prompt' => 'Selecionar Lote']
+        )->label('Lote') ?>
+
 
         <?= $form->field($model, 'Armazem')->textInput(['maxlength' => true]) ?>
 
@@ -128,5 +117,4 @@ use kartik\datecontrol\DateControl;
         <?php ActiveForm::end(); ?>
 
     </div>
-
 </body>

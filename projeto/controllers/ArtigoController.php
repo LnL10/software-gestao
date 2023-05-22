@@ -109,14 +109,29 @@ class ArtigoController extends Controller
             $fornecedorId = $model->Fornecedor_idFornecedor;
             $corId = $model->Cor_idCor;
             $tamanhoId = $model->Tamanho_idtamanho;
+            
 
             $fornecedor = Fornecedor::findOne($fornecedorId);
             $cor = Cor::findOne($corId);
             $tamanho = Tamanho::findOne($tamanhoId);
+            $marca = Marca::findOne($model->Marca_idMarca);
 
-            $codigoBarras = $this->generateCodigoBarras($cor, $tamanho, $fornecedor);
+            $codigoBarras = $this->generateCodigoBarras($cor, $tamanho, $fornecedor,$marca);
 
             $model->CódigoDeBarras = $codigoBarras;
+
+            $referenciaBase = $model->ArtigoBase_ReferenciaBase;
+
+
+            
+            
+            if ($marca) {
+                
+                $model->Referencia = $referenciaBase . '.' . strval($marca->TotalMarca);
+                $marca->TotalMarca++;
+                $marca->save();
+            }
+            
 
             if ($model->save()) {
                 return $this->redirect(['lote/artigos', 'idLote' => $model->Lote_idLote]);
@@ -131,15 +146,16 @@ class ArtigoController extends Controller
     ]);
 }
 
-private function generateCodigoBarras($cor, $tamanho, $fornecedor)
+private function generateCodigoBarras($cor, $tamanho, $fornecedor,$marca)
     {
         $estacao = '31'; 
-        $recebidos = '001'; 
+        $totalMarca = str_pad(strval($marca->TotalMarca), 3, '0', STR_PAD_LEFT); 
         $corCodigo = $cor ? str_pad($cor->CCor, 3, '0', STR_PAD_LEFT) : '000'; 
         $tamanhoCodigo = $tamanho ? str_pad($tamanho->CTamanho, 3, '0', STR_PAD_LEFT) : '00'; 
-        //$fornecedorCodigo = $fornecedor ? $fornecedor->CFornecedor: '00'; 
+        $fornecedorCodigo = $fornecedor ? str_pad($fornecedor->CFornecedor, 2, '0', STR_PAD_LEFT) : '00';
 
-        $codigoBarras = $estacao . $recebidos . $corCodigo . $tamanhoCodigo; //. $fornecedorCodigo;
+
+        $codigoBarras = $estacao . $fornecedorCodigo . $totalMarca . $corCodigo . $tamanhoCodigo; 
 
         return $codigoBarras;
     }

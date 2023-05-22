@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $idFornecedor
  * @property string $NomeFornecedor
+ * @property string $CFornecedor
  *
  * @property Artigo[] $artigos
  */
@@ -28,8 +29,8 @@ class Fornecedor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['NomeFornecedor'], 'required'],
-            [['NomeFornecedor'], 'string', 'max' => 45],
+            [['NomeFornecedor', 'CFornecedor'], 'required'],
+            [['NomeFornecedor', 'CFornecedor'], 'string', 'max' => 45],
             [['NomeFornecedor'], 'unique'],
         ];
     }
@@ -42,6 +43,7 @@ class Fornecedor extends \yii\db\ActiveRecord
         return [
             'idFornecedor' => 'Id Fornecedor',
             'NomeFornecedor' => 'Nome Fornecedor',
+            'CFornecedor' => 'C Fornecedor',
         ];
     }
 
@@ -58,4 +60,5 @@ class Fornecedor extends \yii\db\ActiveRecord
     public static function getAll(){
         return $for = Fornecedor::find()->all();
     }
+    
 }
