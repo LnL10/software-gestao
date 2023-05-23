@@ -1,6 +1,8 @@
 <?php
 use yii\bootstrap5\Html;
 
+
+
 /** @var yii\web\View $this */
 
 $this->title = 'STOCK';
@@ -24,6 +26,8 @@ $this->title = 'STOCK';
 <div style="display: flex; justify-content: center; align-items: center;">
     <?= Html::a('Gerir Artigos/Lotes', ['lote/index'], ['class' => 'but']) ?>
 </div>
+
+
 
 
 </div>

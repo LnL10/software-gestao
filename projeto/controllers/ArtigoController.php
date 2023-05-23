@@ -148,6 +148,7 @@ class ArtigoController extends Controller
 
 private function generateCodigoBarras($cor, $tamanho, $fornecedor,$marca)
     {
+        
         $estacao = '31'; 
         $totalMarca = str_pad(strval($marca->TotalMarca), 3, '0', STR_PAD_LEFT); 
         $corCodigo = $cor ? str_pad($cor->CCor, 3, '0', STR_PAD_LEFT) : '000'; 

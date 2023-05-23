@@ -83,6 +83,24 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     NavBar::end();
     ?>
 </header>
+<?php else: ?>
+    <header id="header">
+        <?php 
+        NavBar::begin([
+            'brandLabel' => "STOCK",
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav'],
+            'items' => [
+                ['label' => 'Home', 'url' => ['/site/index']],
+                ['label' => 'Contactos', 'url' => ['/site/contact']],
+            ]
+        ]);
+        NavBar::end();
+        ?>
+    </header>
 <?php endif; ?>
 
 <main id="main" class="flex-shrink-0" role="main">
