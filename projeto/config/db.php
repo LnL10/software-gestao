@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host='.env('MYSQL_HOSTNAME', 'localhost').';dbname='.env('MYSQL_DATABASE', 'db'),
+    'dsn' => 'mysql:host='.env('MYSQL_HOSTNAME', 'localhost').';dbname='.env('MYSQL_DATABASE', 'projeto-71'),
     'username' => env('MYSQL_USER', 'root'),
     'password' => env('MYSQL_PASSWORD', ''),
     'charset' => 'utf8',
