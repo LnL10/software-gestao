@@ -7,7 +7,7 @@ use app\models\Lote;
 use app\models\Marca;
 use yii\helpers\Html;
 use yii\helpers\CHtml;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Cor;
 use app\models\Tamanho;

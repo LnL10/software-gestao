@@ -12,6 +12,7 @@ use app\models\Genero;
 use app\models\Marca;
 use app\models\Fornecedor;
 use app\models\Artigobase;
+use app\models\Preferencias;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -146,20 +147,23 @@ class ArtigoController extends Controller
     ]);
 }
 
-private function generateCodigoBarras($cor, $tamanho, $fornecedor,$marca)
-    {
-        
-        $estacao = '31'; 
-        $totalMarca = str_pad(strval($marca->TotalMarca), 3, '0', STR_PAD_LEFT); 
-        $corCodigo = $cor ? str_pad($cor->CCor, 3, '0', STR_PAD_LEFT) : '000'; 
-        $tamanhoCodigo = $tamanho ? str_pad($tamanho->CTamanho, 3, '0', STR_PAD_LEFT) : '00'; 
-        $fornecedorCodigo = $fornecedor ? str_pad($fornecedor->CFornecedor, 2, '0', STR_PAD_LEFT) : '00';
+    private function generateCodigoBarras($cor, $tamanho, $fornecedor,$marca)
+        {
+            
+            $userId = Yii::$app->user->id;
+            $preferencias = Preferencias::findOne(['user_id' => $userId]);
+            $estacao = $preferencias ? $preferencias->CEstacao : '31';
+            $estacao = str_pad($estacao, 2, '0', STR_PAD_LEFT);
+            $totalMarca = str_pad(strval($marca->TotalMarca), 3, '0', STR_PAD_LEFT); 
+            $corCodigo = $cor ? str_pad($cor->CCor, 3, '0', STR_PAD_LEFT) : '000'; 
+            $tamanhoCodigo = $tamanho ? str_pad($tamanho->CTamanho, 3, '0', STR_PAD_LEFT) : '00'; 
+            $fornecedorCodigo = $fornecedor ? str_pad($fornecedor->CFornecedor, 2, '0', STR_PAD_LEFT) : '00';
 
 
-        $codigoBarras = $estacao . $fornecedorCodigo . $totalMarca . $corCodigo . $tamanhoCodigo; 
+            $codigoBarras = $estacao . $fornecedorCodigo . $totalMarca . $corCodigo . $tamanhoCodigo; 
 
-        return $codigoBarras;
-    }
+            return $codigoBarras;
+        }
 
 
 
@@ -286,7 +290,7 @@ private function generateCodigoBarras($cor, $tamanho, $fornecedor,$marca)
                     if ($fornecedor !== null) {
                         $artigo->Fornecedor_idFornecedor = $fornecedor->idFornecedor; 
                     } else {
-                        Yii::warning("Fornecedor não encontrada: $FornecedorNome"); 
+                        Yii::warning("Fornecedor não encontrado: $FornecedorNome"); 
                     }
 
                     $artigo->ArtigoBase_ReferenciaBase = $rowData["I"];
@@ -305,6 +309,14 @@ private function generateCodigoBarras($cor, $tamanho, $fornecedor,$marca)
             'model' => $model,
         ]);
     }
+
+
+    public function actionExemplo()
+{
+    $filePath = '..\assets\exemplo.xlsx'; 
+
+    return Yii::$app->response->sendFile($filePath, 'exemplo.xlsx');
+}
     
    
 }

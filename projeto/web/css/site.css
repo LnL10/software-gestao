@@ -253,6 +253,14 @@ a.add{
     color: #dc3545;
 }
 
+.navbar-fixed-right {
+    position: fixed;
+    right: 0;
+    bottom: 10;
+    width: 250px; 
+}
+
+
 
 
 

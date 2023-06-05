@@ -23,7 +23,8 @@
         "webvimark/module-user-management": "^1.0",
         "yiithings/yii2-dotenv": "*",
         "phpoffice/phpspreadsheet": "^1.28",
-        "thtmorais/yii2-dropdown": "*"
+        "thtmorais/yii2-dropdown": "*",
+        "matejch/yii2-sidebar-collapsible": "^1.0"
 
         
         

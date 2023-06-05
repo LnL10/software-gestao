@@ -1,106 +1,126 @@
 <?php
 
 namespace app\models;
-use yii\db\ActiveRecord;
 
-class User extends ActiveRecord implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $auth_key
+ * @property string $password_hash
+ * @property string|null $confirmation_token
+ * @property int $status
+ * @property int|null $superadmin
+ * @property int $created_at
+ * @property int $updated_at
+ * @property string|null $registration_ip
+ * @property string|null $bind_to_ip
+ * @property string|null $email
+ * @property int $email_confirmed
+ *
+ * @property AuthAssignment[] $authAssignments
+ * @property AuthItem[] $itemNames
+ * @property Lote[] $lotes
+ * @property Preferencias[] $preferencias
+ * @property UserVisitLog[] $userVisitLogs
+ */
+class User extends \yii\db\ActiveRecord
 {
-    
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            [['username', 'auth_key', 'password_hash', 'created_at', 'updated_at'], 'required'],
+            [['status', 'superadmin', 'created_at', 'updated_at', 'email_confirmed'], 'integer'],
+            [['username', 'password_hash', 'confirmation_token', 'bind_to_ip'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['registration_ip'], 'string', 'max' => 15],
+            [['email'], 'string', 'max' => 128],
+        ];
     }
 
     /**
-     * Finds user by username
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'auth_key' => 'Auth Key',
+            'password_hash' => 'Password Hash',
+            'confirmation_token' => 'Confirmation Token',
+            'status' => 'Status',
+            'superadmin' => 'Superadmin',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'registration_ip' => 'Registration Ip',
+            'bind_to_ip' => 'Bind To Ip',
+            'email' => 'Email',
+            'email_confirmed' => 'Email Confirmed',
+        ];
+    }
+
+    /**
+     * Gets query for [[AuthAssignments]].
      *
-     * @param string $username
-     * @return static|null
+     * @return \yii\db\ActiveQuery
      */
-    public static function findByUsername($username)
+    public function getAuthAssignments()
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
+     * Gets query for [[ItemNames]].
      *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @return \yii\db\ActiveQuery
      */
-    public function validatePassword($password)
+    public function getItemNames()
     {
-        return $this->password === $password;
+        return $this->hasMany(AuthItem::class, ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Lotes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLotes()
+    {
+        return $this->hasMany(Lote::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Preferencias]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPreferencias()
+    {
+        return $this->hasMany(Preferencias::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserVisitLogs]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserVisitLogs()
+    {
+        return $this->hasMany(UserVisitLog::class, ['user_id' => 'id']);
     }
 }
