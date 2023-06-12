@@ -5,7 +5,7 @@ use yii\bootstrap5\NavBar;
 use app\models\Preferencias;
 
 /** @var yii\web\View $this */
-$CEstacao = "21";
+$CEstacao = "31";
 
 $this->title = 'STOCK';
 ?>

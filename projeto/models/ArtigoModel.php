@@ -171,4 +171,10 @@ class ArtigoModel extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tamanho::class, ['idtamanho' => 'Tamanho_idtamanho']);
     }
+
+    public function getLote()
+    {
+        return $this->hasOne(Lote::class, ['idLote' => 'Lote_idLote']);
+    }
+    
 }

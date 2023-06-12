@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use yii\filters\AccessControl;
+use Yii;
 
 
 /**
@@ -59,6 +60,20 @@ class LoteController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    
+    public function actionAllArtigos($idUser)
+    {
+        $searchModel = new ArtigoSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $dataProvider->query->joinWith('lote')->andWhere(['lote.user_id' => $idUser]);
+            
+        return $this->render('../artigo/all', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

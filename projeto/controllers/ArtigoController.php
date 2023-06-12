@@ -62,7 +62,7 @@ class ArtigoController extends Controller
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
     if ($lote !== null) {
-        $dataProvider->query->joinWith('Lote')->andWhere(['Lote.idLote' => $lote]);
+        $dataProvider->query->joinWith('lote')->andWhere(['lote.idLote' => $lote]);
     }
         
     return $this->render('index', [

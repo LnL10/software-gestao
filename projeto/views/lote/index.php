@@ -107,5 +107,7 @@
 
 <p>
         <?= Html::a('Criar Lote', ['create'], ['class' => 'btn btn-success buttonAdd']) ?>
+        <?= Html::a('Ver Todos os Artigos', ['all-artigos', 'idUser' => Yii::$app->user->id], ['class' => 'btn btn-primary']) ?>
+
     </p>
 </div>
