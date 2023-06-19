@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Lote $model */
 
-$this->title = 'Update Lote: ' . $model->idLote;
+$this->title = 'Update Lote: ' . $model->NomeLote;
 $this->params['breadcrumbs'][] = ['label' => 'Lotes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idLote, 'url' => ['view', 'idLote' => $model->idLote]];
 $this->params['breadcrumbs'][] = 'Update';

@@ -231,84 +231,112 @@ class ArtigoController extends Controller
                 $worksheet = $spreadsheet->getActiveSheet();
     
                 $rowIndex = 1;
+                $errors = '';
+                $importSuccess = true; 
+                $userId = Yii::$app->user->id;
+                
                 foreach ($worksheet->getRowIterator() as $row) {
-                    if ($rowIndex == 1) { // ignora a primeira linha
+                    if ($rowIndex == 1) { 
                         $rowIndex++;
                         continue;
                     }
                     $rowData = $worksheet->toArray(null, true, true, true)[$row->getRowIndex()];
                     $artigo = new ArtigoModel();
                     $artigo->Referencia = $rowData["A"];
-
-                    $artigo->Lote_idLote = $rowData["B"];
-                    
-
+    
+                    $loteNome = $rowData["B"];
+                    $lote = Lote::findOne(['NomeLote' => $loteNome]);
+                    if ($lote === null) {
+                        $lote = new Lote();
+                        $lote->NomeLote = $loteNome;
+                        $lote->user_id = $userId;
+                        $lote->save();
+                    }
+                    $artigo->Lote_idLote = $lote->idLote;
+    
+    
                     $corNome = $rowData["C"]; 
                     $cor = Cor::findOne(['CorSite' => $corNome]); 
                     if ($cor !== null) {
                         $artigo->Cor_idCor = $cor->idCor; 
                     } else {
-                        Yii::warning("Cor não encontrada: $corNome"); 
+                        $errors.= "Artigo #".($rowIndex-1).": Cor não encontrada: $corNome\n";
+                        $importSuccess = false;
                     }
-                    
+    
                     $TamanhoNome = $rowData["D"];
                     $tamanho = Tamanho::findOne(['SiteTamanho' => $TamanhoNome]); 
                     if ($tamanho !== null) {
                         $artigo->Tamanho_idtamanho = $tamanho->idtamanho; 
                     } else {
-                        Yii::warning("Tamanho não encontrada: $TamanhoNome"); 
+                        $errors.="Artigo #".($rowIndex-1).": Tamanho não encontrada: $TamanhoNome\n";  
+                        $importSuccess = false;
                     }
-
+    
                     $CategoriaNome = $rowData["E"];
                     $categoria = Categoria::findOne(['NomeCategoria' => $CategoriaNome]); 
                     if ($categoria !== null) {
                         $artigo->Categoria_idcategoria = $categoria->idcategoria; 
                     } else {
-                        Yii::warning("Categoria não encontrada: $CategoriaNome"); 
+                        $errors.="Artigo #".($rowIndex-1).": Categoria não encontrada: $CategoriaNome\n";  
+                        $importSuccess = false;
                     }
-
-
+    
+    
                     $GeneroNome = $rowData["F"];
                     $genero = Genero::findOne(['TipoGenero' => $GeneroNome]); 
                     if ($genero !== null) {
                         $artigo->Genero_idGenero = $genero->idGenero; 
                     } else {
-                        Yii::warning("Genero não encontrada: $GeneroNome"); 
+                        $errors.="Artigo #".($rowIndex-1).": Gênero não encontrado: $GeneroNome\n"; 
+                        $importSuccess = false;
                     }
-
+    
                     $MarcaNome = $rowData["G"];
                     $marca = Marca::findOne(['NomeMarca' => $MarcaNome]); 
                     if ($marca !== null) {
                         $artigo->Marca_idMarca = $marca->idMarca; 
                     } else {
-                        Yii::warning("Marca não encontrada: $MarcaNome"); 
+                        $errors.="Artigo #".($rowIndex-1).": Marca não encontrada: $MarcaNome\n";  
+                        $importSuccess = false;
                     }
-
-
+    
+    
                     $FornecedorNome = $rowData["H"];
                     $fornecedor = Fornecedor::findOne(['NomeFornecedor' => $FornecedorNome]); 
                     if ($fornecedor !== null) {
                         $artigo->Fornecedor_idFornecedor = $fornecedor->idFornecedor; 
                     } else {
-                        Yii::warning("Fornecedor não encontrado: $FornecedorNome"); 
+                        $errors.= "Artigo #".($rowIndex-1).": Fornecedor não encontrado: $FornecedorNome\n"; 
+                        $importSuccess = false;
                     }
-
+    
                     $artigo->ArtigoBase_ReferenciaBase = $rowData["I"];
-
+    
+                    $codigoBarras = $this->generateCodigoBarras($cor, $tamanho, $fornecedor, $marca);
+                    $artigo->CódigoDeBarras = $codigoBarras;
+    
                     $artigo->save();
                     $rowIndex++;
                 }
+                if (!$importSuccess) {
+                    Yii::$app->session->setFlash('warning', $errors);
+                }
     
-                Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
-                return $this->redirect(['lote/artigos', 'idLote' => $artigo->Lote_idLote]);
+                if ($importSuccess) {
+                    Yii::$app->session->setFlash('success', 'Dados importados com sucesso.');
+                    return $this->redirect(['lote/artigos', 'idLote' => $artigo->Lote_idLote]);
+                }
             }
         }
     
         Yii::$app->session->setFlash('fail', 'Erro ao importar os dados');
-        return $this->render('create', [
+        return $this->render('importar', [
             'model' => $model,
         ]);
     }
+    
+    
 
 
     public function actionExemplo()
